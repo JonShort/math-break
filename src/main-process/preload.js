@@ -1,50 +1,37 @@
-const { mathProblem } = require("./methods");
+const { Game } = require('./Game');
+const { replaceText } = require('./utils/replaceText');
 
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 window.addEventListener("DOMContentLoaded", () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector);
-    if (element) element.innerText = text;
-  };
-
-  let currAnswer = 0;
-  let score = 0;
-  let rollingQ = 0;
+  const CurrentGame = new Game();
 
   const form = document.getElementById("form");
   const input = document.getElementById("answer");
 
-  const newMathProblem = () => {
-    rollingQ++;
-    const { text, answer } = mathProblem();
+  const nextQuestion = () => {
+    CurrentGame.nextQuestion();
 
-    replaceText("question", text);
-    currAnswer = answer;
+    replaceText("question", CurrentGame.question);
     input.value = "";
   };
 
   form.addEventListener("submit", (ev) => {
     ev.preventDefault();
 
-    let statement = "Incorrect";
     const answer = parseInt(ev.target.elements["answer"].value);
+    const isCorrect = CurrentGame.answerQuestion(answer);
 
-    if (answer === currAnswer) {
-      score++;
-      statement = "Correct";
+    alert(`${isCorrect ? "Correct" : "Incorrect"}! Answer was ${CurrentGame.answer} - score ${CurrentGame.score}`);
+
+    if (CurrentGame.gameOver) {
+      alert(`Game over! You scored ${CurrentGame.overallScore}`);
     }
 
-    alert(`${statement}! Answer was ${currAnswer} - score ${score}`);
-
-    if (rollingQ >= 5) {
-      alert(`Game over! You scored ${score}/${rollingQ}`);
-    }
-
-    newMathProblem();
+    nextQuestion();
   });
 
-  newMathProblem();
+  nextQuestion();
 
   input.focus();
 });
