@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <title>Math Break</title>
+  </head>
+  <body>
+    <section>
+      <form id="form">
+        <h2 id="question">original</h2>
+        <input type="number" id="answer" />
+      </form>
+    </section>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="../render-process/gameplay.js"></script>
+  </body>
+</html>

@@ -2,22 +2,48 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
+let mainWindow = null;
+
+// Make this app a single instance app.
+//
+// The main window will be restored and focused instead of a second window
+// opened when a person attempts to launch a second instance.
+//
+// Returns true if the current version of the app should quit instead of
+// launching.
+const makeSingleInstance = () => {
+  if (process.mas) return;
+
+  app.requestSingleInstanceLock();
+
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+};
+
+makeSingleInstance();
+
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
+  mainWindow = new BrowserWindow({
     height: 600,
+    title: app.getName(),
+    width: 800,
     webPreferences: {
       contextIsolation: true,
-      preload: path.join(__dirname, "./main-process/preload.js"),
+      nodeIntegration: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("src/html/index.html");
+  mainWindow.loadFile(path.join(__dirname, "./html/home.html"));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
