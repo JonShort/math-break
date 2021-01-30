@@ -31,7 +31,8 @@ window.addEventListener("DOMContentLoaded", () => {
     );
 
     if (gameOver) {
-      alert(`Game over! You scored ${overallScore}`);
+      localStorage.setItem("finalScore", overallScore);
+      window.location = "game-over.html";
       return;
     }
 
