@@ -1,0 +1,16 @@
+html,
+body {
+  --text-color: black;
+  --background-color: white;
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    --text-color: #c9d1d9;
+    --background-color: #0d1117;
+  }
+}
