@@ -2,6 +2,8 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
+const isDebugMode = /--debug/.test(process.argv[2]);
+
 let mainWindow = null;
 
 // Make this app a single instance app.
@@ -34,7 +36,7 @@ function createWindow() {
     width: 800,
     webPreferences: {
       contextIsolation: true,
-      nodeIntegration: true,
+      nodeIntegration: false,
       preload: path.join(__dirname, "preload.js"),
     },
   });
@@ -43,7 +45,10 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, "./html/home.html"));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  if (isDebugMode) {
+    mainWindow.webContents.openDevTools();
+    mainWindow.maximize();
+  }
 }
 
 // This method will be called when Electron has finished

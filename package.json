@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
+    "debug": "electron . --debug",
+    "lint": "eslint \"src\"",
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"src\""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
