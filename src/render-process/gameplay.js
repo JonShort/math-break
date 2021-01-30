@@ -32,6 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (gameOver) {
       alert(`Game over! You scored ${overallScore}`);
+      window.location = "home.html";
       return;
     }
 
