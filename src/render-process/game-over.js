@@ -4,9 +4,9 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  ipc.send("request-info");
+  ipc.send(events.REQUEST_INFO);
 
-  ipc.on("receive-info", (info) => {
+  ipc.on(events.RECEIVE_INFO, (info) => {
     replaceText("your-score", `You scored ${info.overallScore}`);
   });
 });
