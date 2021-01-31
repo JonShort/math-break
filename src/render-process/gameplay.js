@@ -4,39 +4,37 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  gameMethods.newGame();
+  ipc.send("new-game");
 
   const form = document.getElementById("form");
   const input = document.getElementById("answer");
-
-  const nextQuestion = () => {
-    gameMethods.nextQuestion();
-    replaceText("question", gameMethods.info().question);
-    input.value = "";
-    input.focus();
-  };
 
   form.addEventListener("submit", (ev) => {
     ev.preventDefault();
 
     const providedAnswer = parseInt(ev.target.elements["answer"].value);
-    const { isCorrect, answer } = gameMethods.answerQuestion(providedAnswer);
+    ipc.send("answer-question", providedAnswer);
+  });
 
-    const { gameOver, overallScore, score } = gameMethods.info();
+  // Event listeners
+  ipc.on("question", (question) => {
+    replaceText("question", question);
+    input.value = "";
+    input.focus();
+  });
+
+  ipc.on("answer", (info) => {
+    const { answer, isCorrect, score } = info;
 
     alert(
       `${
         isCorrect ? "Correct" : "Incorrect"
       }! Answer was ${answer} - score ${score}`
     );
-
-    if (gameOver) {
-      alert(`Game over! You scored ${overallScore}`);
-      return;
-    }
-
-    nextQuestion();
   });
 
-  nextQuestion();
+  ipc.on("game-over", (overallScore) => {
+    alert(`Game over! You scored ${overallScore}`);
+    return;
+  });
 });

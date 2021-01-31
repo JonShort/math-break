@@ -1,16 +1,20 @@
-const { contextBridge } = require("electron");
-const { Game } = require("./classes/Game");
+const { contextBridge, ipcRenderer } = require("electron");
 
-const CurrentGame = new Game();
-
-contextBridge.exposeInMainWorld("gameMethods", {
-  answerQuestion: (answer) => CurrentGame.answerQuestion(answer),
-  info: () => ({
-    gameOver: CurrentGame.gameOver,
-    overallScore: CurrentGame.overallScore,
-    question: CurrentGame.question,
-    score: CurrentGame.score,
-  }),
-  newGame: (opts) => CurrentGame.newGame(opts),
-  nextQuestion: () => CurrentGame.nextQuestion(),
+// Expose protected methods that allow the renderer process to use
+// the ipcRenderer without exposing the entire object
+contextBridge.exposeInMainWorld("ipc", {
+  send: (channel, data) => {
+    // whitelist channels
+    let validChannels = ["new-game", "answer-question"];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.send(channel, data);
+    }
+  },
+  on: (channel, func) => {
+    let validChannels = ["answer", "question", "game-over"];
+    if (validChannels.includes(channel)) {
+      // Deliberately strip event as it includes `sender`
+      ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  },
 });
