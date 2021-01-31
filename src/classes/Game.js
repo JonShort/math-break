@@ -1,4 +1,5 @@
 const { mathProblem } = require("./utils/methods");
+const { Timer } = require("./Timer");
 
 class Game {
   constructor(options = {}) {
@@ -8,6 +9,7 @@ class Game {
     this.rollingQ = 0;
     this.rounds = options.rounds || 5;
     this.score = 0;
+    this.timer = new Timer();
 
     this.newGame = this.newGame.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -33,6 +35,8 @@ class Game {
     this.rollingQ = 0;
     this.rounds = options.rounds || 5;
     this.score = 0;
+    this.timer = new Timer();
+    this.timer.start();
   }
 
   nextQuestion() {
@@ -51,6 +55,8 @@ class Game {
       isCorrect = true;
       this.score += 1;
     }
+
+    if (this.gameOver) this.timer.stop();
 
     return {
       answer: this.latestAnswer,
