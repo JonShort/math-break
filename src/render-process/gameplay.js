@@ -4,7 +4,7 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  ipc.send("new-game");
+  ipc.send("request-new-game");
 
   const form = document.getElementById("form");
   const input = document.getElementById("answer");
@@ -13,17 +13,17 @@ window.addEventListener("DOMContentLoaded", () => {
     ev.preventDefault();
 
     const providedAnswer = parseInt(ev.target.elements["answer"].value);
-    ipc.send("answer-question", providedAnswer);
+    ipc.send("request-answer-check", providedAnswer);
   });
 
   // Event listeners
-  ipc.on("question", (question) => {
+  ipc.on("receive-question", (question) => {
     replaceText("question", question);
     input.value = "";
     input.focus();
   });
 
-  ipc.on("answer", (info) => {
+  ipc.on("receive-answer", (info) => {
     const { answer, isCorrect, score } = info;
 
     alert(
@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  ipc.on("game-over", () => {
+  ipc.on("receive-game-over", () => {
     window.location = "game-over.html";
   });
 });

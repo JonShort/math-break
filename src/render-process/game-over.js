@@ -4,7 +4,7 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  ipc.send("get-info");
+  ipc.send("request-info");
 
   ipc.on("receive-info", (info) => {
     replaceText("your-score", `You scored ${info.overallScore}`);

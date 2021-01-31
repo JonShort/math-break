@@ -5,13 +5,22 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("ipc", {
   send: (channel, data) => {
     // whitelist channels
-    let validChannels = ["new-game", "answer-question", "get-info"];
+    let validChannels = [
+      "request-new-game",
+      "request-answer-check",
+      "request-info",
+    ];
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }
   },
   on: (channel, func) => {
-    let validChannels = ["answer", "question", "game-over", "receive-info"];
+    let validChannels = [
+      "receive-answer",
+      "receive-game-over",
+      "receive-info",
+      "receive-question",
+    ];
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (event, ...args) => func(...args));

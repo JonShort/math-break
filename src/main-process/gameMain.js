@@ -5,35 +5,35 @@ const { Game } = require("../classes/Game");
 const gameMain = () => {
   const CurrentGame = new Game();
 
-  ipcMain.on("new-game", (event, opts = {}) => {
+  ipcMain.on("request-new-game", (event, opts = {}) => {
     CurrentGame.newGame(opts);
     CurrentGame.nextQuestion();
 
-    event.reply("question", CurrentGame.question);
+    event.reply("receive-question", CurrentGame.question);
   });
 
-  ipcMain.on("get-info", (event) => {
+  ipcMain.on("request-info", (event) => {
     event.reply("receive-info", {
       overallScore: CurrentGame.overallScore,
     });
   });
 
-  ipcMain.on("answer-question", (event, userAnswer) => {
+  ipcMain.on("request-answer-check", (event, userAnswer) => {
     const { isCorrect, answer } = CurrentGame.answerQuestion(userAnswer);
 
-    event.reply("answer", {
+    event.reply("receive-answer", {
       answer,
       isCorrect,
       score: CurrentGame.score,
     });
 
     if (CurrentGame.gameOver) {
-      event.reply("game-over");
+      event.reply("receive-game-over");
       return;
     }
 
     CurrentGame.nextQuestion();
-    event.reply("question", CurrentGame.question);
+    event.reply("receive-question", CurrentGame.question);
   });
 };
 
