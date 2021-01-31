@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("gameMethods", {
     overallScore: CurrentGame.overallScore,
     question: CurrentGame.question,
     score: CurrentGame.score,
+    duration: CurrentGame.timer.currentValue,
   }),
   newGame: (opts) => CurrentGame.newGame(opts),
   nextQuestion: () => CurrentGame.nextQuestion(),
