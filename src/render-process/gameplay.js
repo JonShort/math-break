@@ -33,8 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  ipc.on("game-over", (overallScore) => {
-    alert(`Game over! You scored ${overallScore}`);
-    return;
+  ipc.on("game-over", () => {
+    window.location = "game-over.html";
   });
 });

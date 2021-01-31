@@ -12,6 +12,12 @@ const gameMain = () => {
     event.reply("question", CurrentGame.question);
   });
 
+  ipcMain.on("get-info", (event) => {
+    event.reply("receive-info", {
+      overallScore: CurrentGame.overallScore,
+    });
+  });
+
   ipcMain.on("answer-question", (event, userAnswer) => {
     const { isCorrect, answer } = CurrentGame.answerQuestion(userAnswer);
 
