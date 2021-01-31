@@ -28,7 +28,7 @@ const gameMain = () => {
     });
 
     if (CurrentGame.gameOver) {
-      event.reply("game-over", CurrentGame.overallScore);
+      event.reply("game-over");
       return;
     }
 
