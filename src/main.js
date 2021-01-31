@@ -2,6 +2,8 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
+const { gameMain } = require("./main-process/gameMain");
+
 const isDebugMode = /--debug/.test(process.argv[2]);
 
 let mainWindow = null;
@@ -62,6 +64,8 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  gameMain();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
