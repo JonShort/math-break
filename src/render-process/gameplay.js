@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const providedAnswer = parseInt(ev.target.elements["answer"].value);
     const { isCorrect, answer } = gameMethods.answerQuestion(providedAnswer);
 
-    const { gameOver, overallScore, score } = gameMethods.info();
+    const { gameOver, overallScore, score, duration } = gameMethods.info();
 
     alert(
       `${
@@ -32,6 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (gameOver) {
       localStorage.setItem("finalScore", overallScore);
+      localStorage.setItem("duration", duration);
       window.location = "game-over.html";
       return;
     }
