@@ -1,11 +1,12 @@
 class Timer {
-  constructor() {
+  constructor(elem = "timer") {
     this.interval = null;
     this.min = 0;
     this.sec = 0;
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.reset = this.reset.bind(this);
+    this.element = document.getElementById(elem);
   }
 
   get currentValue() {
@@ -47,8 +48,7 @@ class Timer {
       this.min++;
       this.sec = 0;
     }
-    const element = document.getElementById("timer");
-    if (element) element.innerText = this.currentValue;
+    if (this.element) this.element.innerText = this.currentValue;
   }
 }
 
