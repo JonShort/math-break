@@ -4,7 +4,12 @@ const replaceText = (selector, text) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  const score = localStorage.getItem("finalScore");
-  const duration = localStorage.getItem("duration");
-  replaceText("your-score", `You scored ${score} in ${duration}`);
+  ipc.send(ipc.events.REQUEST_LATEST_SCORE);
+
+  ipc.on(
+    ipc.events.RECEIVE_LATEST_SCORE,
+    ({ score, rounds, duration } = {}) => {
+      replaceText("your-score", `You scored ${score}/${rounds} in ${duration}`);
+    }
+  );
 });

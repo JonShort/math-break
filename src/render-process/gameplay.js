@@ -33,7 +33,19 @@ window.addEventListener("DOMContentLoaded", () => {
     if (gameOver) {
       localStorage.setItem("finalScore", overallScore);
       localStorage.setItem("duration", duration);
-      window.location = "game-over.html";
+
+      const { rounds, score } = gameMethods.info();
+
+      ipc.send(ipc.events.REQUEST_GAME_OVER, {
+        duration,
+        rounds,
+        score,
+      });
+
+      ipc.on(ipc.events.RECEIVE_GAME_OVER, () => {
+        window.location = "game-over.html";
+      });
+
       return;
     }
 
