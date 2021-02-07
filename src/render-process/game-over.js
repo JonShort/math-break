@@ -1,7 +1,4 @@
-const replaceText = (selector, text) => {
-  const element = document.getElementById(selector);
-  if (element) element.innerText = text;
-};
+const { replaceText } = require("./utils/methods");
 
 window.addEventListener("DOMContentLoaded", () => {
   ipc.send(ipc.events.REQUEST_LATEST_SCORE);
