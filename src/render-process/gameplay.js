@@ -1,5 +1,3 @@
-const { replaceText } = require("./utils/methods");
-
 window.addEventListener("DOMContentLoaded", () => {
   gameMethods.newGame();
 
@@ -8,7 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const nextQuestion = () => {
     gameMethods.nextQuestion();
-    replaceText("question", gameMethods.info().question);
+    helpers.replaceText("question", gameMethods.info().question);
     input.value = "";
     input.focus();
   };
