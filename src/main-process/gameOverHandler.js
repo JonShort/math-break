@@ -1,26 +1,32 @@
 const { ipcMain } = require("electron");
-const { promises: fs } = require("fs");
+const storage = require("electron-json-storage");
 
 const { REQUEST_GAME_OVER, RECEIVE_GAME_OVER } = require("../events");
 
+const defaultStorageLocation = storage.getDefaultDataPath();
+
 const gameOverHandler = (app) => {
   ipcMain.on(REQUEST_GAME_OVER, async (event, args) => {
-    const userDataPath = app.getPath("userData");
+    storage.get("scores", (error, data) => {
+      if (error) throw error;
 
-    const scores = JSON.stringify({
-      rounds: args.rounds,
-      score: args.score,
-      duration: args.duration,
+      // Storage returns an empty object if the key doesn't exist
+      // create an empty array instead
+      const highScores = Object.keys(data).length === 0 ? [] : data;
+      const scores = {
+        rounds: args.rounds,
+        score: args.score,
+        duration: args.duration,
+        date: new Date().toISOString(),
+      };
+      highScores.push(scores);
+
+      console.log(`saving Data to ${defaultStorageLocation}/scores.json`);
+      storage.set("scores", highScores, (error) => {
+        if (error) throw error;
+        event.reply(RECEIVE_GAME_OVER);
+      });
     });
-
-    try {
-      console.log(`saving Data to ${userDataPath}/scores.json`);
-      await fs.writeFile(`${userDataPath}/scores.json`, scores);
-
-      event.reply(RECEIVE_GAME_OVER);
-    } catch (err) {
-      // TODO - add generic "error" event & handling here
-    }
   });
 };
 
