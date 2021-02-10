@@ -1,6 +1,7 @@
 const { contextBridge } = require("electron");
 const { Game } = require("./classes/Game");
 const { exposeIpcInMainWorld } = require("./events");
+const { exposeHelpersInMainWorld } = require("./helpers");
 
 const CurrentGame = new Game();
 
@@ -19,3 +20,4 @@ contextBridge.exposeInMainWorld("gameMethods", {
 });
 
 exposeIpcInMainWorld();
+exposeHelpersInMainWorld();

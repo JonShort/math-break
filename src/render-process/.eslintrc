@@ -1,6 +1,7 @@
 {
   "globals": {
     "gameMethods": "readonly",
-    "ipc": "readonly"
+    "ipc": "readonly",
+    "helpers": "readonly"
   }
 }
