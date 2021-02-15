@@ -1,11 +1,12 @@
 window.addEventListener("DOMContentLoaded", () => {
+  const highScoresSection = document.getElementById("highscores");
   ipc.send(ipc.events.REQUEST_SCORES);
 
   ipc.on(ipc.events.RECEIVE_SCORES, (scores = []) => {
     if (scores.length === 0) {
       const noScoresText = document.createElement("p");
       noScoresText.innerHTML = "No scores available";
-      window.document.body.append(noScoresText);
+      highScoresSection.append(noScoresText);
     } else {
       var list = document.createElement("ul");
       scores.reverse().map(({ score, rounds, duration, date }) => {
@@ -15,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
         ).toLocaleString()} - ${score}/${rounds} - ${duration}`;
         list.appendChild(element);
       });
-      window.document.body.append(list);
+      highScoresSection.append(list);
     }
   });
 });
