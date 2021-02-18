@@ -3,7 +3,7 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
 const { gameOverHandler } = require("./main-process/gameOverHandler");
-const { latestScoreHandler } = require("./main-process/latestScoreHandler");
+const { scoreHandler } = require("./main-process/scoreHandler");
 
 const isDebugMode = /--debug/.test(process.argv[2]);
 
@@ -67,7 +67,7 @@ app.whenReady().then(() => {
   });
 
   gameOverHandler(app);
-  latestScoreHandler(app);
+  scoreHandler(app);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
